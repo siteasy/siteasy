@@ -1,0 +1,9 @@
+{
+    "theme":"default",
+    "index":"index.md",
+    "logo":"Siteasy",
+    "path_prefix":"",
+    "footer":"Siteasy - Make website generation life easy",
+    "add_date": true,
+    "cates":{"posts": {}, "about": {"url":"about.html","text":"about","md":"about.md"}}
+}
