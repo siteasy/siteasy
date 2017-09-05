@@ -1,9 +1,12 @@
 {
+    "articles_path":"articles",
     "theme":"default",
-    "index":"index.md",
+    "index":{"text_0":"Siteasy","text_1":"Simplest site generator","button_0_text":"Quick start"},
     "logo":"Siteasy",
-    "path_prefix":"",
-    "footer":"Siteasy - Make website generation life easy",
+    "output":"output",
+    "footer":"Siteasy - Make static site generation life easy",
     "add_date": true,
-    "cates":{"posts": {}, "about": {"url":"about.html","text":"about","md":"about.md"}}
+    "cates":{"News": {}, "Docs":{}, "Themes":{}, "Community":{}, 
+             "github":{"url":"https://siteasy.github.io"}},
+    "plugins":["list"]
 }

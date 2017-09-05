@@ -13,15 +13,8 @@
     <body>
     {% include 'header.html' %}
     <div class="container" style="min-height:1200px;">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-8">
                 {% block content %}
                 {% endblock %}
-              </div>
-              <div class="col-xs-6 col-md-4">
-                {% include 'sider.html' %}
-              </div>
-            </div>
     </div>
     {% include 'footer.html' %}
             <script>
@@ -39,7 +32,7 @@
                   //    return hljs.highlightAuto(code).value;
                   //},
                 });
-                document.getElementById('md_content').innerHTML = marked(document.getElementById('md').innerHTML);
+                document.getElementById('md_content').innerHTML = marked(document.getElementById('md').innerText);
             </script>
     </body>
 </html>

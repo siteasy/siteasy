@@ -1,5 +1,5 @@
-<ul class="list-group">
-  {% for item in side_items %}
-    <li><a href="{{path_prefix}}{{item.url}}">{{item.text}}</a></li>
-  {% endfor %}
-</ul>
+{% for plugin in plugins_context.sider %}
+    {% with plugin_context=plugin %}
+    {% include "%s"%plugin_context.tpl %}
+    {% endwith %}
+{% endfor %}
