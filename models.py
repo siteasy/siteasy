@@ -37,6 +37,8 @@ class BaseView:
         self.date = None
         self.md_content = ''
         self.short_md_content = ''
+        self.config = {}
+        self.link_to = ''
 
     def __repr__(self):
         return self.classname + ':' + self.text
@@ -83,22 +85,32 @@ class BaseView:
         path = self.get_article_path()
         if os.path.isdir(path):
             if self.order:
-                flist = [arti+'.md' for arti in self.order]
+                flist = [child for child in self.order]
             else:
-                flist = sorted([fn for fn in os.listdir(path) if os.path.isfile(os.path.join(path,fn))], key = lambda x: os.stat(os.path.join(path,x)).st_ctime,reverse=True)
+                flist = sorted([fn for fn in os.listdir(path) \
+                    if (os.path.isfile(os.path.join(path,fn)) \
+                    and os.path.splitext(fn)[1] == '.md' and os.path.splitext(fn)[0] != 'index') or  \
+                    os.path.isdir(os.path.join(path,fn))], \
+                    key = lambda x: os.stat(os.path.join(path,x)).st_ctime,reverse=True)
             #TODO check if flist with config.json has inccorect file name
-            article_list = [(os.path.splitext(fn)[0],fn) for fn in flist if os.path.splitext(fn)[1] == '.md' and os.path.isfile(os.path.join(path,fn)) and os.path.splitext(fn)[0] != 'index']
+            #article_list = [(os.path.splitext(fn)[0],fn) for fn in flist if os.path.splitext(fn)[0] != 'index']
             #print("flist of %s = %s %s"%(path,flist,article_list))
-            for arti,md_file in article_list:
-                mainview = BaseView(arti,md_file=md_file,tpl='detail.html')
-                #print(mainview,mainview.md_file,mainview.get_path())
-                mainview.set_parent(self)
-                mainview.apply_md_file()
-            dir_list = sorted([fn for fn in os.listdir(path) if os.path.isdir(os.path.join(path,fn))], key = lambda x: os.stat(os.path.join(path,x)).st_ctime,reverse=True)
-            for cate in dir_list:
-                cateview = BaseView(cate,tpl='index.html',is_cate=True)
-                cateview.set_parent(self)
-                cateview.gen_children()
+            #for arti,md_file in article_list:
+            for fn in flist:
+                if os.path.isfile(os.path.join(path,fn)):
+                    arti = os.path.splitext(fn)[0]
+                    mainview = BaseView(arti,md_file=fn,tpl='detail.html')
+                    #print(mainview,mainview.md_file,mainview.get_path())
+                    mainview.set_parent(self)
+                    mainview.apply_md_file()
+                else:
+                    cateview = BaseView(fn,tpl='index.html',is_cate=True)
+                    cateview.set_parent(self)
+                    if fn in self.config.keys():
+                        cateview.apply_config(self.config[fn])
+                    os.mkdir(cateview.get_path())
+                    #os.mkdir(os.path.join(global_config['output'],cate))
+                    cateview.gen_children()
 
     def get_all_sub_articles(self):
         articles = []
@@ -114,6 +126,9 @@ class BaseView:
         self.site_map = {'id':self.id, 'text':self.text,'url':self.url,'selected':False,'is_cate':self.is_cate}
         if self.ext_url:
             self.site_map.update({'url':self.ext_url})
+        elif self.link_to:
+            view = self.get_child_by_text(self.link_to)
+            self.site_map.update({'url':view.url})
         sub_site_map = []
         for child in self.children:
             sub_site_map.append(child.gen_site_map())
@@ -143,9 +158,19 @@ class BaseView:
                 return view 
         raise Exception("Instance %s not found"%text)
 
+    def get_child_by_text(self,text):
+        for view in self.children:
+            if view.text.lower() == text.lower():
+                return view 
+        raise Exception("Instance %s not found"%text)
+
+
     def apply_config(self,cate_config):
+        self.config = cate_config
         if 'order' in cate_config.keys():
             self.order = cate_config['order']
+        if 'link_to' in cate_config.keys():
+            self.link_to = cate_config['link_to']
 
     def set_md_file(self,md_file):
         self.md_file = md_file
@@ -165,11 +190,11 @@ class BaseView:
         logging.debug("%s update plugin context"%self.text)
         #if self.classname == 'MainView' and self.parent:
         #    self.merge_plugin(self.parent.plugins_context)
-        obj = self.parent
-        if obj:
-            while obj.parent: #do not add index's plugins
-                self.merge_plugin(obj.plugins_context)
-                obj = obj.parent
+        #obj = self.parent
+        #if obj:
+        #    while obj.parent: #do not add index's plugins
+        #        self.merge_plugin(obj.plugins_context)
+        #        obj = obj.parent
         self.update_context({'plugins_context':self.plugins_context})
         if 'sider' in self.plugins_context.keys():
             self.update_context({'has_sider':True})

@@ -26,6 +26,7 @@ class Site:
         for cate in global_config['cates'].keys():
             cateview = BaseView(cate,tpl='index.html',is_cate=True)
             cateview.set_parent(self.indexview)
+            #apply_config need to be before gen_children becuase gen_children need order information
             cateview.apply_config(global_config['cates'][cate])
             if os.path.lexists(os.path.join('articles',cate,'index.md')):
                 cateview.set_md_file('index.md')
