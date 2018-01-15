@@ -212,7 +212,7 @@ class BaseView:
             self.update_context({'global_site_map':global_site_map})
             s = render(self.tpl,self.context)
             #print(context_dict)
-            f = open(self.get_output_path()+'.html','w')
+            f = open(self.get_output_path()+'.html','w',encoding='utf-8')
             f.write(s)
             f.close()
             for view in self.children:

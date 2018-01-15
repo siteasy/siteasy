@@ -1,12 +1,14 @@
 import os
+import siteasy
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 from collections import OrderedDict
 import logging
 import logging.config
+import sys
 
 VERSION = "0.1.0"
-PLUGINS_PATH = 'siteasy.plugins'
+PLUGINS_PATH = 'plugins'
 
 #get global_config from config.json
 CONFIG_FILE = 'config.json'
@@ -40,8 +42,9 @@ LOGGING = {
 
 logging.config.dictConfig(LOGGING)
 
+sys.setdefaultcoding('utf-8')
 f = open(CONFIG_FILE)
-global_config = json.loads(f.read(),object_pairs_hook=OrderedDict)
+global_config = json.loads(f.read().decode('gbk').encode('utf-8'),object_pairs_hook=OrderedDict)
 f.close()
 
 global_context = {k:global_config[k] for k in ['logo','footer']}

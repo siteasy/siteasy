@@ -57,7 +57,7 @@ def renderMD(md_in):
     return markdown(md_in)
 
 def loadjson(fn,ordered_dict = True):
-    f = open(fn)
+    f = open(fn,encoding='utf-8')
     c = json.loads(f.read(),object_pairs_hook=OrderedDict)
     f.close()
     return c
@@ -69,7 +69,7 @@ def render(tpl,context):
 
 def get_md_content(md_path):
     #print("md_file=%s"%md_path)
-    f = open(md_path)
+    f = open(md_path,encoding='utf-8')
     lines = f.readlines()
     s = ''.join(lines)
     short_content = ''.join(lines[:10])
