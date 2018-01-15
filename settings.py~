@@ -6,7 +6,7 @@ import logging
 import logging.config
 
 VERSION = "0.1.0"
-PLUGINS_PATH = 'plugins'
+PLUGINS_PATH = 'siteasy.plugins'
 
 #get global_config from config.json
 CONFIG_FILE = 'config.json'

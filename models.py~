@@ -210,6 +210,7 @@ class BaseView:
             self.update_context({'md_content':renderMD(self.md_content),'short_md_content':renderMD(self.short_md_content)})
             self.update_context(global_context)
             self.update_context({'global_site_map':global_site_map})
+            print(self.tpl)
             s = render(self.tpl,self.context)
             #print(context_dict)
             f = open(self.get_output_path()+'.html','w')

@@ -46,7 +46,7 @@ class Site:
     def apply_plugins(self):
         for cate in global_config['plugins']:
             for plugin_text in global_config['plugins'][cate]:
-                plugin_module = __import__('siteasy.plugins.'+plugin_text)
+                plugin_module = __import__('siteasy')
                 plugin_module = getattr(plugin_module,'plugins')
                 plugin = getattr(plugin_module,plugin_text).Plugin(plugin_text)
                 if cate == 'all_cates':

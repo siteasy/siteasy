@@ -64,7 +64,7 @@ def loadjson(fn,ordered_dict = True):
 
 def render(tpl,context):
     #print(env.loader.list_templates())
-    t = env.get_template(tpl) 
+    t = env.get_template('siteasy'+os.sep+tpl) 
     return t.render(context)
 
 def get_md_content(md_path):

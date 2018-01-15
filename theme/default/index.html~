@@ -5,8 +5,8 @@
         {% include "%s"%plugin_context.tpl %}
         {% endwith %}
     {% endfor %}
-    <div class="md_content">{{md_content|safe}}</div>
-    <ul class="">
+    <div class="md_content" data="{{md_content}}"></div>
+    <ul class="list-group">
       {% for item in site_map.sub %}
         {% if item.is_cate %}
             <li>{{item.text}}</li>

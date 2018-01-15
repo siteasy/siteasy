@@ -8,13 +8,15 @@
         {% if has_sider %}
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-8">
-                 <div class="md_content">{{md_content|safe}}</div>
+                <div id="md_content"></div>
+                <div id="md" style="display:None;">{{md_content}}</div>
               </div>
               <div class="col-xs-6 col-md-4">
                 {% include 'sider.html' %}
               </div>
             </div>
         {% else %}
-            <div class="md_content">{{md_content|safe}}</div>
+            <div id="md_content"></div>
+            <div id="md" style="display:None;">{{md_content}}</div>
         {% endif %}
 {% endblock %}
